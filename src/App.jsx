@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { saveAs } from "file-saver";
 import "./App.css";
+import logo from './assets/logo.png';
 import {
   Document,
   Packer,
@@ -12,6 +13,7 @@ import {
 } from "docx";
 
 function App() {
+  const [selectedValue, setSelectedValue] = useState('');
   const [resumeData, setResumeData] = useState({
     name: "",
     email: "",
@@ -43,12 +45,13 @@ function App() {
     cert2link:"",
     cert2org:"",
   });
+  const [selectedOption, setSelectedOption] = useState("");
 
   const handleChange = (e) => {
+    // setSelectedOption(e.target.value);
     setResumeData({ ...resumeData, [e.target.name]: e.target.value });
   };
 
-  const [selectedOption, setSelectedOption] = useState("");
 
   const handleChangee = (e) => {
     setSelectedOption(e.target.value);
@@ -81,19 +84,19 @@ function App() {
               spacing: { after: 300 },
 
               children: [
-                new TextRun(`${resumeData.email} | +91-${resumeData.phone} | `), // Plain text
+                new TextRun(`${resumeData.email} | +91-${resumeData.phone} | `), 
 
                 // External Hyperlink
                 new ExternalHyperlink({
                   children: [
                     new TextRun({
-                      text: selectedOption, // Text to display as the link
+                      text: selectedOption, 
                       // style: "Hyperlink",
                       size: 22,
-                      color: "0000FF", // Optional: specify color
+                      color: "0000FF", 
                     }),
                   ],
-                  link: resumeData.codeIdLink, // Link destination
+                  link: resumeData.codeIdLink, 
                 }),
 
                 new TextRun(` | `),
@@ -101,13 +104,13 @@ function App() {
                 new ExternalHyperlink({
                   children: [
                     new TextRun({
-                      text: "LinkedIn ", // Text to display as the link
+                      text: "LinkedIn ", 
                       // style: "Hyperlink",
                       size: 22,
-                      color: "0000FF", // Optional: specify color
+                      color: "0000FF", 
                     }),
                   ],
-                  link: resumeData.linkedIn, // Link destination
+                  link: resumeData.linkedIn, 
                 }),
 
                 new TextRun(` | `),
@@ -115,10 +118,9 @@ function App() {
                 new ExternalHyperlink({
                   children: [
                     new TextRun({
-                      text: "Github ", // Text to display as the link
-                      // style: "Hyperlink",
+                      text: "Github ",
                       size: 22,
-                      color: "0000FF", // Optional: specify color
+                      color: "0000FF", 
                     }),
                   ],
                   link: resumeData.github, // Link destination
@@ -128,9 +130,9 @@ function App() {
                   alignment: AlignmentType.CENTER,
                   children: [
                     new TextRun({
-                      text: "_".repeat(112), // Creates a line with underscores
-                      color: "#888888", // Optional: gray color for the line
-                      size: 16, // Adjusts font size for the divider
+                      text: "_".repeat(112), 
+                      color: "#888888", 
+                      size: 16, 
                     }),
                   ],
                   spacing: { after: 0 },
@@ -147,8 +149,8 @@ function App() {
                 new TextRun({
                   text: "Education:",
                   color: "#000000",
-                  size: 27, // Font size must be in half-points (e.g., 40px becomes 80)
-                  bold: true, // Optional, if you want it bold
+                  size: 27, 
+                  bold: true, 
                 }),
               ],
             }),
@@ -157,9 +159,9 @@ function App() {
               alignment: AlignmentType.LEFT,
               children: [
                 new TextRun({
-                  text: `${resumeData.university}\n`, // Creates a line with underscores
-                  color: "#000000", // Optional: gray color for the line
-                  size: 25, // Adjusts font size for the divider
+                  text: `${resumeData.university}\n`, 
+                  color: "#000000", 
+                  size: 25, 
                 }),
               ],
               spacing: { after: 10 },
@@ -169,9 +171,9 @@ function App() {
               alignment: AlignmentType.LEFT,
               children: [
                 new TextRun({
-                  text: `${resumeData.coursename}`, // Creates a line with underscores
-                  color: "#000000", // Optional: gray color for the line
-                  size: 25, // Adjusts font size for the divider
+                  text: `${resumeData.coursename}`, 
+                  color: "#000000", 
+                  size: 25, 
                 }),
               ],
               spacing: { after: 10 },
@@ -180,10 +182,10 @@ function App() {
               alignment: AlignmentType.LEFT,
               children: [
                 new TextRun({
-                  text: `${resumeData.cgpa} CGPA`, // Creates a line with underscores
+                  text: `${resumeData.cgpa} CGPA`, 
                   color: "#000000",
-                  bold: true, // Optional: gray color for the line
-                  size: 22, // Adjusts font size for the divider
+                  bold: true, 
+                  size: 22, 
                 }),
               ],
               spacing: { after: 100 },
@@ -193,10 +195,10 @@ function App() {
               alignment: AlignmentType.CENTER,
               children: [
                 new TextRun({
-                  text: "_".repeat(112), // Creates a line with underscores
+                  text: "_".repeat(112), 
                   color: "#888888",
-                  bold: true, // Optional: gray color for the line
-                  size: 16, // Adjusts font size for the divider
+                  bold: true, 
+                  size: 16, 
                 }),
               ],
               spacing: { after: 200 },
@@ -225,14 +227,14 @@ function App() {
               bold: true,
               children: [
                 new TextRun({
-                  text: `Languages - `, // Creates a line with underscores
+                  text: `Languages - `, 
                   bold: true,
                   size: 25,
                 }),
                 new TextRun({
-                  text: `${resumeData.languages}\n`, // Creates a line with underscores
-                  color: "#000000", // Optional: gray color for the line
-                  size: 25, // Adjusts font size for the divider
+                  text: `${resumeData.languages}\n`, 
+                  color: "#000000", 
+                  size: 25,
                 }),
               ],
               spacing: { after: 10 },
@@ -246,14 +248,14 @@ function App() {
               bold: true,
               children: [
                 new TextRun({
-                  text: `Database - `, // Creates a line with underscores
+                  text: `Database - `,
                   bold: true,
                   size: 25,
                 }),
                 new TextRun({
-                  text: `${resumeData.database}\n`, // Creates a line with underscores
-                  color: "#000000", // Optional: gray color for the line
-                  size: 25, // Adjusts font size for the divider
+                  text: `${resumeData.database}\n`, 
+                  color: "#000000", 
+                  size: 25,
                 }),
               ],
               spacing: { after: 10 },
@@ -267,14 +269,14 @@ function App() {
               bold: true,
               children: [
                 new TextRun({
-                  text: `Frameworks - `, // Creates a line with underscores
+                  text: `Frameworks - `, 
                   bold: true,
                   size: 25,
                 }),
                 new TextRun({
-                  text: `${resumeData.framework}\n`, // Creates a line with underscores
-                  color: "#000000", // Optional: gray color for the line
-                  size: 25, // Adjusts font size for the divider
+                  text: `${resumeData.framework}\n`,
+                  color: "#000000", 
+                  size: 25, 
                 }),
               ],
               spacing: { after: 10 },
@@ -288,14 +290,13 @@ function App() {
               bold: true,
               children: [
                 new TextRun({
-                  text: `Developer Tools - `, // Creates a line with underscores
+                  text: `Developer Tools - `, 
                   bold: true,
                   size: 25,
                 }),
                 new TextRun({
-                  text: `${resumeData.developertools}\n`, // Creates a line with underscores
-                  color: "#000000", // Optional: gray color for the line
-                  size: 25, // Adjusts font size for the divider
+                  text: `${resumeData.developertools}\n`, 
+                  color: "#000000", 
                 }),
               ],
               spacing: { after: 10 },
@@ -305,10 +306,10 @@ function App() {
               alignment: AlignmentType.CENTER,
               children: [
                 new TextRun({
-                  text: "_".repeat(112), // Creates a line with underscores
+                  text: "_".repeat(112), 
                   color: "#888888",
-                  bold: true, // Optional: gray color for the line
-                  size: 16, // Adjusts font size for the divider
+                  bold: true, 
+                  size: 16, 
                 }),
               ],
               spacing: { after: 200 },
@@ -333,7 +334,7 @@ function App() {
               bold: true,
               children: [
                 new TextRun({
-                  text: `${resumeData.proj1name}`, // Creates a line with underscores
+                  text: `${resumeData.proj1name}`, 
                   bold: true,
                   size: 25,
                 }),
@@ -346,14 +347,14 @@ function App() {
               bold: true,
               children: [
                 new TextRun({
-                  text: `Techstack: `, // Creates a line with underscores
+                  text: `Techstack: `, 
                   bold: true,
                   size: 25,
                 }),
                 new TextRun({
-                  text: `${resumeData.proj1techstack}\n`, // Creates a line with underscores
-                  color: "#000000", // Optional: gray color for the line
-                  size: 25, // Adjusts font size for the divider
+                  text: `${resumeData.proj1techstack}\n`,
+                  color: "#000000", 
+                  size: 25, 
                 }),
               ],
               spacing: { after: 10 },
@@ -366,9 +367,9 @@ function App() {
               },
               children: [
                 new TextRun({
-                  text: `${resumeData.proj1desc}\n`, // Creates a line with underscores
-                  color: "#000000", // Optional: gray color for the line
-                  size: 25, // Adjusts font size for the divider
+                  text: `${resumeData.proj1desc}\n`, 
+                  color: "#000000", 
+                  size: 25,
                 }),
               ],
               spacing: { after: 140 },
@@ -379,7 +380,7 @@ function App() {
               bold: true,
               children: [
                 new TextRun({
-                  text: `${resumeData.proj2name}`, // Creates a line with underscores
+                  text: `${resumeData.proj2name}`, 
                   bold: true,
                   size: 25,
                 }),
@@ -392,14 +393,14 @@ function App() {
               bold: true,
               children: [
                 new TextRun({
-                  text: `Techstack: `, // Creates a line with underscores
+                  text: `Techstack: `, 
                   bold: true,
                   size: 25,
                 }),
                 new TextRun({
-                  text: `${resumeData.proj2techstack}\n`, // Creates a line with underscores
-                  color: "#000000", // Optional: gray color for the line
-                  size: 25, // Adjusts font size for the divider
+                  text: `${resumeData.proj2techstack}\n`,
+                  color: "#000000", 
+                  size: 25, 
                 }),
               ],
               spacing: { after: 10 },
@@ -412,9 +413,9 @@ function App() {
               },
               children: [
                 new TextRun({
-                  text: `${resumeData.proj2desc}\n`, // Creates a line with underscores
-                  color: "#000000", // Optional: gray color for the line
-                  size: 25, // Adjusts font size for the divider
+                  text: `${resumeData.proj2desc}\n`, 
+                  color: "#000000", 
+                  size: 25, 
                 }),
               ],
               spacing: { after: 40 },
@@ -424,10 +425,10 @@ function App() {
               alignment: AlignmentType.CENTER,
               children: [
                 new TextRun({
-                  text: "_".repeat(112), // Creates a line with underscores
+                  text: "_".repeat(112), 
                   color: "#888888",
-                  bold: true, // Optional: gray color for the line
-                  size: 16, // Adjusts font size for the divider
+                  bold: true, 
+                  size: 16, 
                 }),
               ],
               spacing: { after: 200 },
@@ -454,9 +455,9 @@ function App() {
               },
               children: [
                 new TextRun({
-                  text: `${resumeData.ach1}\n`, // Creates a line with underscores
-                  color: "#000000", // Optional: gray color for the line
-                  size: 25, // Adjusts font size for the divider
+                  text: `${resumeData.ach1}\n`, 
+                  color: "#000000", 
+                  size: 25, 
                 }),
               ],
               spacing: { after: 40 },
@@ -469,9 +470,9 @@ function App() {
               },
               children: [
                 new TextRun({
-                  text: `${resumeData.ach2}\n`, // Creates a line with underscores
-                  color: "#000000", // Optional: gray color for the line
-                  size: 25, // Adjusts font size for the divider
+                  text: `${resumeData.ach2}\n`, 
+                  color: "#000000", 
+                  size: 25,
                 }),
               ],
               spacing: { after: 40 },
@@ -481,10 +482,10 @@ function App() {
               alignment: AlignmentType.CENTER,
               children: [
                 new TextRun({
-                  text: "_".repeat(112), // Creates a line with underscores
+                  text: "_".repeat(112), 
                   color: "#888888",
-                  bold: true, // Optional: gray color for the line
-                  size: 16, // Adjusts font size for the divider
+                  bold: true, 
+                  size: 16, 
                 }),
               ],
               spacing: { after: 200 },
@@ -509,25 +510,25 @@ function App() {
               bullet:{
                 level: 0,
               },
-              // spacing: { after: 300 },
+              
               children: [
                   new ExternalHyperlink({
                       children: [
                           new TextRun({
-                              text: `${resumeData.cert1name}`, // Text to display as the link
-                              color: "0000FF",           // Standard hyperlink blue color
-                              size: 25,                  // Size in half-points (12.5 points)
-                                          // Underline for hyperlink effect
+                              text: `${resumeData.cert1name}`, 
+                              color: "0000FF",           
+                              size: 25,                 
+                                         
                           }),
 
                           new TextRun({
-                            text: `, by ${resumeData.cert1org}`, // Text to display as the link
-                            color: "000000",           // Standard hyperlink blue color
-                            size: 25,                  // Size in half-points (12.5 points)
-                                        // Underline for hyperlink effect
+                            text: `, by ${resumeData.cert1org}`, 
+                            color: "000000",           
+                            size: 25,                  
+                                       
                         }),
                       ],
-                      link: resumeData.cert1link,       // The link destination (must be a valid URL)
+                      link: resumeData.cert1link,       
                   }),
 
               ],
@@ -538,26 +539,26 @@ function App() {
             bullet:{
               level: 0,
             },
-            // spacing: { after: 300 },
+           
             children: [
 
                 new ExternalHyperlink({
                   children: [
                       new TextRun({
-                          text: `${resumeData.cert2name}`, // Text to display as the link
-                          color: "0000FF",           // Standard hyperlink blue color
-                          size: 25,                  // Size in half-points (12.5 points)
-                                      // Underline for hyperlink effect
+                          text: `${resumeData.cert2name}`,
+                          color: "0000FF",         
+                          size: 25,                 
+                                     
                       }),
 
                       new TextRun({
-                        text: `, by ${resumeData.cert2org}`, // Text to display as the link
-                        color: "000000",           // Standard hyperlink blue color
-                        size: 25,                  // Size in half-points (12.5 points)
-                                    // Underline for hyperlink effect
+                        text: `, by ${resumeData.cert2org}`, 
+                        color: "000000",           
+                        size: 25,                  
+                                   
                     }),
                   ],
-                  link: resumeData.cert2link,       // The link destination (must be a valid URL)
+                  link: resumeData.cert2link,     
               }),
             ],
         }),
@@ -568,15 +569,20 @@ function App() {
       ],
     });
 
-    // Generate the .docx document and trigger download
+    
     Packer.toBlob(doc).then((blob) => {
       saveAs(blob, "resume.docx");
     });
   };
 
   return (
+    <>
+    
     <div className="App">
-      <h1>BuildMe - Resume Maker</h1>
+      <div className="heading">
+        <img src={logo} alt="" />
+      <h1>Resume Maker</h1>
+      </div>
       <h3>Basic Details : </h3>
       <div>
         <input
@@ -618,27 +624,37 @@ function App() {
         />
       </div>
 
+
       <div>
-        <label htmlFor="">Coding Platform Id</label>
-        <label>
-          <input
-            type="radio"
-            value="Leetcode"
-            checked={selectedOption === "Leetcode"}
-            onChange={handleChangee}
-          />
-          Leetcode
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="Hackerrank"
-            checked={selectedOption === "Hackerrank"}
-            onChange={handleChangee}
-          />
-          Hackerrank
-        </label>
-      </div>
+      <label htmlFor="dropdown">Choose an option: </label>
+      <select
+        id="dropdown"
+        value={selectedOption}
+        onChange={handleChangee}
+        style={{
+          padding: '5px',
+          borderRadius: '4px',
+          border: '1px solid #d1b1ff',
+          backgroundColor : '#2e0963',
+          color: '#c7a3f9',
+          marginBottom: '10px',
+        }}
+      >
+        <option value="" disabled>
+          Select an option
+        </option>
+        <option value="LeetCode">LeetCode</option>
+        <option value="HackerRank">HackerRank</option>
+        <option value="GeeksForGeeks">Geeks For Geeks</option>
+        <option value="CodeChef">CodeChef</option>
+        <option value="CodeForces">CodeForces</option>
+        <option value="CodingNinjas">Coding Ninjas</option>
+      </select>
+      {selectedOption && (
+        <p style={{ marginTop: '10px' }}>You selected: {selectedOption}</p>
+      )}
+    </div>
+
 
       <div>
         <input
@@ -873,7 +889,13 @@ function App() {
       </div>
 
       <button onClick={generateDocument}>Download</button>
+
     </div>
+      <div className="footer">
+        <p> This Website Is Still In It's Refinement Period. Last Update Received On 12 December 2024 © Navneet Dadhich</p>
+      </div>
+    </>
+
   );
 }
 

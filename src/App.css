@@ -3,11 +3,36 @@ body{
   color: rgb(46, 9, 99);
 }
 
+::selection {
+  background: #c18af5; /* Background color for the selected text */
+  color: #ffffff; /* Text color for the selected text */
+}
+
 .App {
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
   font-family: Arial, sans-serif;
+}
+
+.heading{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 90px;
+  margin-bottom: 30px;
+ max-width: 600px;
+}
+
+h1{
+  color: #9f133a;
+  margin: 0;
+  font-family:   'Trebuchet MS';
+  font-size: 25px
+}
+img{
+  width: 200px;
 }
 
 input, textarea {
@@ -30,4 +55,25 @@ button {
 
 button:hover {
   background-color: #0056b3;
+}
+
+.footer p {
+  margin-top: 50px;
+  font-size: 10px;
+}
+
+
+@media screen and (max-width: 480px) {
+  .heading{
+    margin-bottom: 15px;
+  }
+  h1 {
+    font-size: 20px;
+  }
+  img{
+    width: 150px;
+  }
+  input{
+    width: 240px;
+  }
 }
