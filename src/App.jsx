@@ -679,9 +679,9 @@ function App() {
         style={{
           padding: '5px',
           borderRadius: '4px',
-          border: '1px solid #d1b1ff',
+          border: '1px solid #ffffff',
           backgroundColor : '#2e0963',
-          color: '#c7a3f9',
+          color: '#ffffff',
           marginBottom: '10px',
         }}
       >
