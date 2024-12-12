@@ -663,7 +663,7 @@ function App() {
         <input
           type="text"
           name="github"
-          placeholder="github"
+          placeholder="Github"
           value={resumeData.github}
           onChange={handleChange}
         />
@@ -744,7 +744,7 @@ function App() {
         <input
           type="text"
           name="cgpa"
-          placeholder="cgpa"
+          placeholder="CGPA"
           value={resumeData.cgpa}
           onChange={handleChange}
         />
@@ -754,7 +754,7 @@ function App() {
         <input
           type="text"
           name="languages"
-          placeholder="Languages"
+          placeholder="Coding Languages"
           value={resumeData.languages}
           onChange={handleChange}
         />
