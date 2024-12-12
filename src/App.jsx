@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { saveAs } from "file-saver";
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 import "./App.css";
 import logo from './assets/logo.png';
 import {
@@ -52,12 +54,52 @@ function App() {
     setResumeData({ ...resumeData, [e.target.name]: e.target.value });
   };
 
+  
+
+ 
 
   const handleChangee = (e) => {
     setSelectedOption(e.target.value);
   };
 
   const generateDocument = () => {
+
+    const requiredFields = [
+      { field: "name", label: "Name" },
+      { field: "email", label: "Email" },
+      { field: "phone", label: "Phone Number" },
+      { field: "university", label: "University" },
+      { field: "coursename", label: "Course Name" },
+      { field: "cgpa", label: "CGPA" },
+      { field: "languages", label: "Languages" },
+      { field: "database", label: "Database" },
+      { field: "framework", label: "Framework" },
+      { field: "developertools", label: "Developer Tools" },
+      { field: "proj1name", label: "Project 1 Name" },
+      { field: "proj1techstack", label: "Project 1 Techstack" },
+      { field: "proj1desc", label: "Project 1 Description" },
+      { field: "proj2name", label: "Project 2 Name" },
+      { field: "proj2techstack", label: "Project 2 Techstack" },
+      { field: "proj2desc", label: "Project 2 Description" },
+      { field: "ach1", label: "Achievement 1" },
+      { field: "ach2", label: "Achievement 2" },
+      { field: "cert1name", label: "Certificate 1 Name" },
+      { field: "cert1org", label: "Certificate 1 Organization" },
+      { field: "cert1link", label: "Certificate 1 Link" },
+      { field: "cert2name", label: "Certificate 2 Name" },
+      { field: "cert2org", label: "Certificate 2 Organization" },
+      { field: "cert2link", label: "Certificate 2 Link" },
+    ];
+  
+   
+    for (const { field, label } of requiredFields) {
+      if (!resumeData[field] || resumeData[field].trim() === "") {
+
+        toast.error(`Please fill the ${label} field.`);
+        return; 
+      }
+    }
+
     const doc = new Document({
       sections: [
         {
@@ -569,6 +611,7 @@ function App() {
       ],
     });
 
+    toast.success("Resume Exported successfully!");
     
     Packer.toBlob(doc).then((blob) => {
       saveAs(blob, "resume.docx");
@@ -579,6 +622,7 @@ function App() {
     <>
     
     <div className="App">
+    
       <div className="heading">
         <img src={logo} alt="" />
       <h1>Resume Maker</h1>
@@ -592,6 +636,7 @@ function App() {
           placeholder="Name"
           value={resumeData.name}
           onChange={handleChange}
+          required
         />
       </div>
       <div>
@@ -889,6 +934,8 @@ function App() {
       </div>
 
       <button onClick={generateDocument}>Download</button>
+        <ToastContainer
+        theme="colored"/>
 
     </div>
       <div className="footer">
