@@ -679,9 +679,9 @@ function App() {
         style={{
           padding: '5px',
           borderRadius: '4px',
-          border: '1px solid #ffffff',
-          backgroundColor : '#2e0963',
-          color: '#ffffff',
+          border: '1px solid transparent',
+          backgroundColor : '#314f58',
+          color: '#F1F0E8',
           marginBottom: '10px',
         }}
       >
@@ -933,7 +933,7 @@ function App() {
           />
       </div>
 
-      <button onClick={generateDocument}>Download</button>
+      <button className="button" onClick={generateDocument}>Download</button>
         <ToastContainer
         theme="colored"/>
 
