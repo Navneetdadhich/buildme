@@ -43,7 +43,7 @@ input:focus {
 }
 
 h1{
-  color: #9f133a;
+  color: #9f133a  !important ;
   margin: 0;
   font-family:   'Trebuchet MS';
   font-size: 25px
@@ -61,23 +61,6 @@ input, textarea {
   border: 1px solid #F1F0E8;
 }
 
-/* button {
-  padding: 10px 20px;
-  background-color: #314f58;
-  color: #F1F0E8;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #F1F0E8;
-  color: #314f58;
-  transition: 0.2s ease-in;
-} */
-
-
-/* From Uiverse.io by Deri-Kurniawan */ 
 .button {
   position: relative;
   padding: 6px 16px;
@@ -99,7 +82,7 @@ button:hover {
 
 .button:hover {
   transform: scale(1.05);
-  color: #314f58;
+  color: #314f58 !important;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
@@ -124,6 +107,19 @@ button:hover {
   right: 0;
 }
 
+[data-theme='dark'] .button {
+  background-color: #F1F0E8;
+  color: #314f58;
+}
+
+[data-theme='dark'] .button:hover {
+  color: #F1F0E8 !important;
+}
+
+[data-theme='dark'] .button::before {
+  background: linear-gradient(to right, #314f58, #314f58);
+}
+
 
 .footer p {
   margin-top: 50px;
@@ -143,5 +139,178 @@ button:hover {
   }
   input{
     width: 325px;
+  }
+}
+
+
+/* Add these styles to your existing CSS */
+.theme-switch-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.theme-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.theme-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #314f58;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: #B3C8CF;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #B3C8CF;
+}
+
+input:checked + .slider:before {
+  background-color: #314f58;
+  transform: translateX(26px);
+}
+
+@media screen and (max-width: 425px) {
+  .theme-switch-container {
+    top: 8px;
+    right: 8px;
+  }
+
+  .theme-switch {
+    width: 40px;
+    height: 22px;
+  }
+
+  .slider:before {
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(18px);
+  }
+}
+
+/* Ensure the theme switch doesn't overlap with content */
+.App {
+  position: relative;
+  padding-top: 20px; /* Add some space at the top */
+}
+
+@media screen and (max-width: 480px) {
+  .App {
+    padding-top: 15px;
+  }
+}
+
+
+/* Dark theme colors */
+[data-theme='dark'] {
+  background-color: #314f58;
+  color: #F1F0E8;
+}
+
+[data-theme='dark'] input {
+  background-color: #B3C8CF;
+  color: #314f58;
+}
+
+[data-theme='dark'] select, dropdown {
+  background-color: #B3C8CF;
+  color: #314f58;
+}
+
+[data-theme='dark'] .project-section,
+[data-theme='dark'] .certificate-section {
+  background-color: rgba(67, 92, 100, 0.2);
+  border-color: rgba(241, 240, 232, 0.2);
+}
+
+[data-theme='dark'] h1 {
+  color: #F1F0E8;
+}
+
+[data-theme='dark'] h3,
+[data-theme='dark'] h5 {
+  color: #F1F0E8;
+}
+
+
+.footer {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.footer p {
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+.footer .heart {
+  color: #e25555;
+  display: inline-block;
+  animation: heartbeat 1.5s ease infinite;
+}
+
+.footer a {
+  color: #314f58;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.footer a:hover {
+  color: #9f133a;
+}
+
+/* Dark theme styles */
+[data-theme='dark'] .footer a {
+  color: #F1F0E8;
+}
+
+[data-theme='dark'] .footer a:hover {
+  color: #B3C8CF;
+}
+
+/* Heart animation */
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* Responsive styles */
+@media screen and (max-width: 480px) {
+  .footer p {
+    font-size: 10px;
   }
 }

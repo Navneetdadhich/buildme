@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { saveAs } from "file-saver";
 import { ToastContainer, toast } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
@@ -16,6 +16,24 @@ import {
 
 function App() {
   const [selectedValue, setSelectedValue] = useState('');
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [numProjects, setNumProjects] = useState(1);
+  const [numCertificates, setNumCertificates] = useState(1);
+
+  const [isDarkThemee, setIsDarkThemee] = useState(() => {
+    const savedTheme = localStorage.getItem('theme');
+    return savedTheme === 'dark';
+  });
+
+  // Update theme and save to localStorage
+  const toggleThemee = () => {
+    setIsDarkThemee(prev => {
+      const newTheme = !prev;
+      localStorage.setItem('theme', newTheme ? 'dark' : 'light');
+      return newTheme;
+    });
+  };
+  
   const [resumeData, setResumeData] = useState({
     name: "",
     email: "",
@@ -38,6 +56,9 @@ function App() {
     proj2name: "",
     proj2techstack: "",
     proj2desc: "",
+    proj3name: "",
+    proj3techstack: "",
+    proj3desc: "",
     ach1:"",
     ach2:"",
     cert1name:"",
@@ -46,6 +67,12 @@ function App() {
     cert2name:"",
     cert2link:"",
     cert2org:"",
+    cert3name:"",
+    cert3link:"",
+    cert3org:"",
+    cert4name:"",
+    cert4link:"",
+    cert4org:"",
   });
   const [selectedOption, setSelectedOption] = useState("");
 
@@ -55,8 +82,14 @@ function App() {
   };
 
   
-
+  const toggleTheme = () => {
+    setIsDarkTheme(!isDarkTheme);
+  };
  
+  useEffect(() => {
+    document.body.setAttribute('data-theme', isDarkTheme ? 'dark' : 'light');
+  }, [isDarkTheme]);
+
 
   const handleChangee = (e) => {
     setSelectedOption(e.target.value);
@@ -75,21 +108,38 @@ function App() {
       { field: "database", label: "Database" },
       { field: "framework", label: "Framework" },
       { field: "developertools", label: "Developer Tools" },
-      { field: "proj1name", label: "Project 1 Name" },
-      { field: "proj1techstack", label: "Project 1 Techstack" },
-      { field: "proj1desc", label: "Project 1 Description" },
-      { field: "proj2name", label: "Project 2 Name" },
-      { field: "proj2techstack", label: "Project 2 Techstack" },
-      { field: "proj2desc", label: "Project 2 Description" },
+      // { field: "proj1name", label: "Project 1 Name" },
+      // { field: "proj1techstack", label: "Project 1 Techstack" },
+      // { field: "proj1desc", label: "Project 1 Description" },
+      // { field: "proj2name", label: "Project 2 Name" },
+      // { field: "proj2techstack", label: "Project 2 Techstack" },
+      // { field: "proj2desc", label: "Project 2 Description" },
       { field: "ach1", label: "Achievement 1" },
       { field: "ach2", label: "Achievement 2" },
-      { field: "cert1name", label: "Certificate 1 Name" },
-      { field: "cert1org", label: "Certificate 1 Organization" },
-      { field: "cert1link", label: "Certificate 1 Link" },
-      { field: "cert2name", label: "Certificate 2 Name" },
-      { field: "cert2org", label: "Certificate 2 Organization" },
-      { field: "cert2link", label: "Certificate 2 Link" },
+      // { field: "cert1name", label: "Certificate 1 Name" },
+      // { field: "cert1org", label: "Certificate 1 Organization" },
+      // { field: "cert1link", label: "Certificate 1 Link" },
+      // { field: "cert2name", label: "Certificate 2 Name" },
+      // { field: "cert2org", label: "Certificate 2 Organization" },
+      // { field: "cert2link", label: "Certificate 2 Link" },
     ];
+
+    for (let i = 1; i <= numProjects; i++) {
+      requiredFields.push(
+        { field: `proj${i}name`, label: `Project ${i} Name` },
+        { field: `proj${i}techstack`, label: `Project ${i} Techstack` },
+        { field: `proj${i}desc`, label: `Project ${i} Description` }
+      );
+    }
+  
+    // Add required fields based on number of certificates
+    for (let i = 1; i <= numCertificates; i++) {
+      requiredFields.push(
+        { field: `cert${i}name`, label: `Certificate ${i} Name` },
+        { field: `cert${i}org`, label: `Certificate ${i} Organization` },
+        { field: `cert${i}link`, label: `Certificate ${i} Link` }
+      );
+    }
   
    
     for (const { field, label } of requiredFields) {
@@ -371,110 +421,67 @@ function App() {
               ],
             }),
 
-            new Paragraph({
-              alignment: AlignmentType.LEFT,
-              bold: true,
-              children: [
-                new TextRun({
-                  text: `${resumeData.proj1name}`, 
-                  bold: true,
-                  size: 25,
-                }),
-              ],
-              spacing: { after: 30 },
-            }),
-
-            new Paragraph({
-              alignment: AlignmentType.LEFT,
-              bold: true,
-              children: [
-                new TextRun({
-                  text: `Techstack: `, 
-                  bold: true,
-                  size: 25,
-                }),
-                new TextRun({
-                  text: `${resumeData.proj1techstack}\n`,
-                  color: "#000000", 
-                  size: 25, 
-                }),
-              ],
-              spacing: { after: 10 },
-            }),
-
-            new Paragraph({
-              alignment: AlignmentType.LEFT,
-              bullet: {
-                level: 0,
-              },
-              children: [
-                new TextRun({
-                  text: `${resumeData.proj1desc}\n`, 
-                  color: "#000000", 
-                  size: 25,
-                }),
-              ],
-              spacing: { after: 140 },
-            }),
-
-            new Paragraph({
-              alignment: AlignmentType.LEFT,
-              bold: true,
-              children: [
-                new TextRun({
-                  text: `${resumeData.proj2name}`, 
-                  bold: true,
-                  size: 25,
-                }),
-              ],
-              spacing: { after: 30 },
-            }),
-
-            new Paragraph({
-              alignment: AlignmentType.LEFT,
-              bold: true,
-              children: [
-                new TextRun({
-                  text: `Techstack: `, 
-                  bold: true,
-                  size: 25,
-                }),
-                new TextRun({
-                  text: `${resumeData.proj2techstack}\n`,
-                  color: "#000000", 
-                  size: 25, 
-                }),
-              ],
-              spacing: { after: 10 },
-            }),
-
-            new Paragraph({
-              alignment: AlignmentType.LEFT,
-              bullet: {
-                level: 0,
-              },
-              children: [
-                new TextRun({
-                  text: `${resumeData.proj2desc}\n`, 
-                  color: "#000000", 
-                  size: 25, 
-                }),
-              ],
-              spacing: { after: 40 },
-            }),
-
+            ...[...Array(numProjects)].map((_, index) => [
+              new Paragraph({
+                alignment: AlignmentType.LEFT,
+                bold: true,
+                children: [
+                  new TextRun({
+                    text: resumeData[`proj${index + 1}name`],
+                    bold: true,
+                    size: 25,
+                  }),
+                ],
+                spacing: { after: 30 },
+              }),
+              
+              new Paragraph({
+                alignment: AlignmentType.LEFT,
+                bold: true,
+                children: [
+                  new TextRun({
+                    text: `Techstack: `,
+                    bold: true,
+                    size: 25,
+                  }),
+                  new TextRun({
+                    text: resumeData[`proj${index + 1}techstack`],
+                    color: "#000000",
+                    size: 25,
+                  }),
+                ],
+                spacing: { after: 10 },
+              }),
+              
+              new Paragraph({
+                alignment: AlignmentType.LEFT,
+                bullet: { level: 0 },
+                children: [
+                  new TextRun({
+                    text: resumeData[`proj${index + 1}desc`],
+                    color: "#000000",
+                    size: 25,
+                  }),
+                ],
+                spacing: { after: index === numProjects - 1 ? 200 : 140 },
+              }),
+            ]).flat(),
+    
+            // Separator after Projects
             new Paragraph({
               alignment: AlignmentType.CENTER,
               children: [
                 new TextRun({
-                  text: "_".repeat(112), 
+                  text: "_".repeat(112),
                   color: "#888888",
-                  bold: true, 
-                  size: 16, 
+                  bold: true,
+                  size: 16,
                 }),
               ],
               spacing: { after: 200 },
             }),
+
+            // achievements
 
             new Paragraph({
               heading: HeadingLevel.HEADING_2,
@@ -533,6 +540,7 @@ function App() {
               spacing: { after: 200 },
             }),
 
+            // certificates
             new Paragraph({
               heading: HeadingLevel.HEADING_2,
               alignment: AlignmentType.LEFT,
@@ -546,65 +554,33 @@ function App() {
                 }),
               ],
             }),
-
-             new Paragraph({
-              alignment: AlignmentType.LEFT,
-              bullet:{
-                level: 0,
-              },
-              
-              children: [
+    
+            // Dynamic Certificates
+            ...[...Array(numCertificates)].map((_, index) => 
+              new Paragraph({
+                alignment: AlignmentType.LEFT,
+                bullet: { level: 0 },
+                children: [
                   new ExternalHyperlink({
-                      children: [
-                          new TextRun({
-                              text: `${resumeData.cert1name}`, 
-                              color: "0000FF",           
-                              size: 25,                 
-                                         
-                          }),
-
-                          new TextRun({
-                            text: `, by ${resumeData.cert1org}`, 
-                            color: "000000",           
-                            size: 25,                  
-                                       
-                        }),
-                      ],
-                      link: resumeData.cert1link,       
-                  }),
-
-              ],
-          }),
-
-          new Paragraph({
-            alignment: AlignmentType.LEFT,
-            bullet:{
-              level: 0,
-            },
-           
-            children: [
-
-                new ExternalHyperlink({
-                  children: [
+                    children: [
                       new TextRun({
-                          text: `${resumeData.cert2name}`,
-                          color: "0000FF",         
-                          size: 25,                 
-                                     
+                        text: resumeData[`cert${index + 1}name`],
+                        color: "0000FF",
+                        size: 25,
                       }),
-
-                      new TextRun({
-                        text: `, by ${resumeData.cert2org}`, 
-                        color: "000000",           
-                        size: 25,                  
-                                   
-                    }),
-                  ],
-                  link: resumeData.cert2link,     
-              }),
-            ],
-        }),
-          
+                    ],
+                    link: resumeData[`cert${index + 1}link`],
+                  }),
+                  new TextRun({
+                    text: `, by ${resumeData[`cert${index + 1}org`]}`,
+                    color: "000000",
+                    size: 25,
+                  }),
+                ],
+                spacing: { after: index === numCertificates - 1 ? 200 : 40 },
+              })
+            ),
+            
 
           ],
         },
@@ -620,6 +596,23 @@ function App() {
 
   return (
     <>
+
+<div className="theme-switch-container">
+        <label className="theme-switch">
+          <input
+            type="checkbox"
+            checked={isDarkTheme}
+            onChange={toggleTheme}
+          />
+          <span className="slider"></span>
+        </label>
+      </div>
+
+        
+        {/* Rest of your existing JSX */}
+  
+
+      
     
     <div className="App">
     
@@ -680,8 +673,8 @@ function App() {
           padding: '5px',
           borderRadius: '4px',
           border: '1px solid transparent',
-          backgroundColor : '#314f58',
-          color: '#F1F0E8',
+          backgroundColor: isDarkTheme ? '#B3C8CF' : '#314f58',
+          color: isDarkTheme ? '#314f58' : '#F1F0E8',
           marginBottom: '10px',
         }}
       >
@@ -787,7 +780,32 @@ function App() {
         />
       </div>
       <h3>Projects : </h3>
-      <h5>Project 1</h5>
+
+      <div>
+        <label htmlFor="numProjects">Number of Projects (1-3): </label>
+        <select 
+          id="numProjects" 
+          value={numProjects} 
+          onChange={(e) => setNumProjects(Number(e.target.value))}
+          style={{
+            padding: '5px',
+            borderRadius: '4px',
+            border: '1px solid transparent',
+            backgroundColor: isDarkTheme ? '#B3C8CF' : '#314f58',
+            color: isDarkTheme ? '#314f58' : '#F1F0E8',
+            marginBottom: '10px',
+          }}
+        >
+          <option value={1}>1</option>
+          <option value={2}>2</option>
+          <option value={3}>3</option>
+        </select>
+      </div>
+
+      {/* Project 1 */}
+      {numProjects >= 1 && (
+        <>
+          <h5>Project 1</h5>
       <div>
         <input
           type="text"
@@ -817,8 +835,13 @@ function App() {
           onChange={handleChange}
         />
       </div>
+        </>
+      )}
 
-      <h5>Project 2</h5>
+      {/* Project 2 */}
+      {numProjects >= 2 && (
+        <>
+          <h5>Project 2</h5>
       <div>
         <input
           type="text"
@@ -848,6 +871,43 @@ function App() {
           onChange={handleChange}
         />
       </div>
+        </>
+      )}
+
+      {/* Project 3 */}
+      {numProjects >= 3 && (
+        <>
+          <h5>Project 3</h5>
+          <div>
+            <input
+              type="text"
+              name="proj3name"
+              placeholder="Project 3 Name"
+              value={resumeData.proj3name}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              name="proj3techstack"
+              placeholder="Project 3 Techstack"
+              value={resumeData.proj3techstack}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              name="proj3desc"
+              placeholder="Project 3 Description"
+              value={resumeData.proj3desc}
+              onChange={handleChange}
+            />
+          </div>
+        </>
+      )}
+       
 
       <h3>Achievements : </h3>
 
@@ -873,74 +933,80 @@ function App() {
 
       <h3>Certificates : </h3>
 
-      <h5>Certificate 1</h5>
       <div>
-        <input
-          type="text"
-          name="cert1name"
-          placeholder="Certificate 1 Name"
-          value={resumeData.cert1name}
-          onChange={handleChange}
-        />
-      </div>
-      <div>
-        <input
-          type="text"
-          name="cert1link"
-          placeholder="Certificate 1 Link"
-          value={resumeData.cert1link}
-          onChange={handleChange}
-          />
+        <label htmlFor="numCertificates">Number of Certificates (1-4): </label>
+        <select 
+          id="numCertificates" 
+          value={numCertificates} 
+          onChange={(e) => setNumCertificates(Number(e.target.value))}
+          style={{
+            padding: '5px',
+            borderRadius: '4px',
+            border: '1px solid transparent',
+            backgroundColor: isDarkTheme ? '#B3C8CF' : '#314f58',
+          color: isDarkTheme ? '#314f58' : '#F1F0E8',
+            marginBottom: '10px',
+          }}
+        >
+          <option value={1}>1</option>
+          <option value={2}>2</option>
+          <option value={3}>3</option>
+          <option value={4}>4</option>
+        </select>
       </div>
 
-      <div>
-        <input
-          type="text"
-          name="cert1org"
-          placeholder="Certificate 1 Organisation"
-          value={resumeData.cert1org}
-          onChange={handleChange}
-          />
-      </div>
-          <h5>Certificate 2</h5>
-
+      {/* Certificate sections */}
+      {[...Array(numCertificates)].map((_, index) => (
+        <div key={index}>
+          <h5>Certificate {index + 1}</h5>
           <div>
-        <input
-          type="text"
-          name="cert2name"
-          placeholder="Certificate 2 Name"
-          value={resumeData.cert2name}
-          onChange={handleChange}
-        />
-      </div>
-      <div>
-        <input
-          type="text"
-          name="cert2link"
-          placeholder="Certificate 2 Link"
-          value={resumeData.cert2link}
-          onChange={handleChange}
-          />
-      </div>
+            <input
+              type="text"
+              name={`cert${index + 1}name`}
+              placeholder={`Certificate ${index + 1} Name`}
+              value={resumeData[`cert${index + 1}name`]}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              name={`cert${index + 1}link`}
+              placeholder={`Certificate ${index + 1} Link`}
+              value={resumeData[`cert${index + 1}link`]}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              name={`cert${index + 1}org`}
+              placeholder={`Certificate ${index + 1} Organisation`}
+              value={resumeData[`cert${index + 1}org`]}
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+        
+      ))}
 
-      <div>
-        <input
-          type="text"
-          name="cert2org"
-          placeholder="Certificate 2 Organisation"
-          value={resumeData.cert2org}
-          onChange={handleChange}
-          />
-      </div>
 
-      <button className="button" onClick={generateDocument}>Download</button>
+      <button className="button" onClick={generateDocument}
+      // style={{
+      //  border: 'none',
+      // }}
+      >Download</button>
         <ToastContainer
         theme="colored"/>
 
     </div>
-      <div className="footer">
-        <p> This Website Is Still In It's Refinement Period. Last Update Received On 12 December 2024 © Navneet Dadhich</p>
-      </div>
+   
+
+<div className="footer">
+  <p>Made with <span className="heart">❤</span> by <a href="https://github.com/Navneetdadhich" target="_blank" rel="noopener noreferrer">Navneet Dadhich</a></p>
+  <p>This Website Is Still In It's Refinement Period. Last Update Received On 18 December 2024</p>
+</div>
+    
     </>
 
   );
