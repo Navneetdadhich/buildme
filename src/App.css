@@ -314,3 +314,97 @@ input:checked + .slider:before {
     font-size: 10px;
   }
 }
+
+/* Updated Progress Bar Styles */
+.progress-container {
+  position: sticky;
+  top: 0;
+  background-color: #B3C8CF; /* Light theme background */
+  padding: 10px 20px;
+  z-index: 900; /* Below theme switcher but above content */
+  margin: 0 -20px 20px -20px; /* Negative margin to stretch full width */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress {
+  height: 100%;
+  background: #314f58;
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.progress-text {
+  text-align: center;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.section-progress {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.section-item {
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 10px;
+  background: rgba(49, 79, 88, 0.1);
+  border-radius: 4px;
+}
+
+/* Dark theme support */
+[data-theme='dark'] .progress-container {
+  background-color: #314f58;
+}
+
+[data-theme='dark'] .progress-bar {
+  background: #435c64;
+}
+
+[data-theme='dark'] .progress {
+  background: #F1F0E8;
+}
+
+[data-theme='dark'] .section-item {
+  background: rgba(241, 240, 232, 0.1);
+}
+
+/* Responsive styles */
+@media screen and (max-width: 480px) {
+  .progress-container {
+    padding: 8px 15px;
+  }
+
+  .progress-text {
+    font-size: 12px;
+  }
+
+  .section-progress {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 8px;
+  }
+
+  .section-item {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+}
+
+/* Add some padding to the top of the App to account for the sticky progress bar */
+.App {
+  padding-top: 20px;
+}

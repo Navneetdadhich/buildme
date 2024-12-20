@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { saveAs } from "file-saver";
+import ProgressBar2 from "./components/ProgressBar2.jsx";
+
 import { ToastContainer, toast } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
 import "./App.css";
@@ -16,14 +18,50 @@ import {
 
 function App() {
   const [selectedValue, setSelectedValue] = useState('');
+  const [sectionProgress, setSectionProgress] = useState({});
   const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [numProjects, setNumProjects] = useState(1);
   const [numCertificates, setNumCertificates] = useState(1);
+
+  const isValidCGPA = (cgpa) => {
+    // Matches format like "7.50", "8.00", "10.00", etc.
+    const cgpaRegex = /^(?:[0-9]|10)(?:\.[0-9]{2})?$/;
+    
+    if (!cgpaRegex.test(cgpa)) {
+      return false;
+    }
+    
+    // Convert to number and check range
+    const numericCGPA = parseFloat(cgpa);
+    return numericCGPA >= 0 && numericCGPA <= 10;
+  };
+
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const isValidPhone = (phone) => {
+    const phoneRegex = /^\d{10}$/;
+    return phoneRegex.test(phone);
+  };
+
+  const isValidUrl = (url) => {
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
+  };
 
   const [isDarkThemee, setIsDarkThemee] = useState(() => {
     const savedTheme = localStorage.getItem('theme');
     return savedTheme === 'dark';
   });
+
+  // validate the phone, email, links
 
   // Update theme and save to localStorage
   const toggleThemee = () => {
@@ -33,7 +71,8 @@ function App() {
       return newTheme;
     });
   };
-  
+
+
   const [resumeData, setResumeData] = useState({
     name: "",
     email: "",
@@ -76,12 +115,18 @@ function App() {
   });
   const [selectedOption, setSelectedOption] = useState("");
 
+
   const handleChange = (e) => {
-    // setSelectedOption(e.target.value);
-    setResumeData({ ...resumeData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+  
+    // Always update the state first to allow typing
+    setResumeData(prevData => ({
+      ...prevData,
+      [name]: value
+    }));
+    
   };
 
-  
   const toggleTheme = () => {
     setIsDarkTheme(!isDarkTheme);
   };
@@ -95,60 +140,93 @@ function App() {
     setSelectedOption(e.target.value);
   };
 
+
+// validation start
+const validateAllFields = () => {
+
+  const requiredFields = [
+    { field: "name", label: "Name" },
+    { field: "email", label: "Email" },
+    { field: "phone", label: "Phone Number" },
+    { field: "university", label: "University" },
+    { field: "coursename", label: "Course Name" },
+    { field: "cgpa", label: "CGPA" },
+    { field: "languages", label: "Languages" },
+    { field: "database", label: "Database" },
+    { field: "framework", label: "Framework" },
+    { field: "developertools", label: "Developer Tools" },
+    { field: "ach1", label: "Achievement 1" },
+    { field: "ach2", label: "Achievement 2" },
+  ];
+
+  for (let i = 1; i <= numProjects; i++) {
+    requiredFields.push(
+      { field: `proj${i}name`, label: `Project ${i} Name` },
+      { field: `proj${i}techstack`, label: `Project ${i} Techstack` },
+      { field: `proj${i}desc`, label: `Project ${i} Description` }
+    );
+  }
+
+  // Add required fields based on number of certificates
+  for (let i = 1; i <= numCertificates; i++) {
+    requiredFields.push(
+      { field: `cert${i}name`, label: `Certificate ${i} Name` },
+      { field: `cert${i}org`, label: `Certificate ${i} Organization` },
+      { field: `cert${i}link`, label: `Certificate ${i} Link` }
+    );
+  }
+  
+  for (const { field, label } of requiredFields) {
+    if (!resumeData[field] || resumeData[field].trim() === "") {
+
+      toast.error(`Please fill the ${label} field.`);
+      return; 
+    }
+  }
+
+
+  // validate the email, phone, links
+
+  if (!isValidCGPA(resumeData.cgpa)) {
+    toast.error('Please enter a valid CGPA in format 0.00 to 10.00');
+    return;
+  }
+
+  if (!isValidEmail(resumeData.email)) {
+    toast.error('Please enter a valid email address');
+    return;
+  }
+
+  if (!isValidPhone(resumeData.phone)) {
+    toast.error('Please enter a valid 10-digit phone number');
+    return;
+  }
+
+  // URL validations
+  const urlFields = {
+    'LinkedIn': resumeData.linkedIn,
+    'Github': resumeData.github,
+    'Coding Platform': resumeData.codeIdLink
+  };
+
+  for (const [fieldName, url] of Object.entries(urlFields)) {
+    if (!isValidUrl(url)) {
+      toast.error(`Please enter a valid URL for ${fieldName}`);
+      return;
+    }
+  }
+  return true;
+};
+// validation end
+
+
   const generateDocument = () => {
 
-    const requiredFields = [
-      { field: "name", label: "Name" },
-      { field: "email", label: "Email" },
-      { field: "phone", label: "Phone Number" },
-      { field: "university", label: "University" },
-      { field: "coursename", label: "Course Name" },
-      { field: "cgpa", label: "CGPA" },
-      { field: "languages", label: "Languages" },
-      { field: "database", label: "Database" },
-      { field: "framework", label: "Framework" },
-      { field: "developertools", label: "Developer Tools" },
-      // { field: "proj1name", label: "Project 1 Name" },
-      // { field: "proj1techstack", label: "Project 1 Techstack" },
-      // { field: "proj1desc", label: "Project 1 Description" },
-      // { field: "proj2name", label: "Project 2 Name" },
-      // { field: "proj2techstack", label: "Project 2 Techstack" },
-      // { field: "proj2desc", label: "Project 2 Description" },
-      { field: "ach1", label: "Achievement 1" },
-      { field: "ach2", label: "Achievement 2" },
-      // { field: "cert1name", label: "Certificate 1 Name" },
-      // { field: "cert1org", label: "Certificate 1 Organization" },
-      // { field: "cert1link", label: "Certificate 1 Link" },
-      // { field: "cert2name", label: "Certificate 2 Name" },
-      // { field: "cert2org", label: "Certificate 2 Organization" },
-      // { field: "cert2link", label: "Certificate 2 Link" },
-    ];
 
-    for (let i = 1; i <= numProjects; i++) {
-      requiredFields.push(
-        { field: `proj${i}name`, label: `Project ${i} Name` },
-        { field: `proj${i}techstack`, label: `Project ${i} Techstack` },
-        { field: `proj${i}desc`, label: `Project ${i} Description` }
-      );
-    }
-  
-    // Add required fields based on number of certificates
-    for (let i = 1; i <= numCertificates; i++) {
-      requiredFields.push(
-        { field: `cert${i}name`, label: `Certificate ${i} Name` },
-        { field: `cert${i}org`, label: `Certificate ${i} Organization` },
-        { field: `cert${i}link`, label: `Certificate ${i} Link` }
-      );
-    }
-  
-   
-    for (const { field, label } of requiredFields) {
-      if (!resumeData[field] || resumeData[field].trim() === "") {
-
-        toast.error(`Please fill the ${label} field.`);
-        return; 
-      }
-    }
+  if (!validateAllFields()) {
+    return;
+  }
+    
 
     const doc = new Document({
       sections: [
@@ -171,7 +249,7 @@ function App() {
             new Paragraph({
               // text: `${resumeData.email} | ${resumeData.phone} | ${selectedOption}`,
               alignment: AlignmentType.CENTER,
-              size: 22,
+              size: 25,
               color: "#000000",
               spacing: { after: 300 },
 
@@ -184,7 +262,7 @@ function App() {
                     new TextRun({
                       text: selectedOption, 
                       // style: "Hyperlink",
-                      size: 22,
+                      size: 25,
                       color: "0000FF", 
                     }),
                   ],
@@ -198,7 +276,7 @@ function App() {
                     new TextRun({
                       text: "LinkedIn ", 
                       // style: "Hyperlink",
-                      size: 22,
+                      size: 25,
                       color: "0000FF", 
                     }),
                   ],
@@ -211,7 +289,7 @@ function App() {
                   children: [
                     new TextRun({
                       text: "Github ",
-                      size: 22,
+                      size: 25,
                       color: "0000FF", 
                     }),
                   ],
@@ -253,7 +331,7 @@ function App() {
                 new TextRun({
                   text: `${resumeData.university}\n`, 
                   color: "#000000", 
-                  size: 25, 
+                  size: 22, 
                 }),
               ],
               spacing: { after: 10 },
@@ -265,7 +343,7 @@ function App() {
                 new TextRun({
                   text: `${resumeData.coursename}`, 
                   color: "#000000", 
-                  size: 25, 
+                  size: 22, 
                 }),
               ],
               spacing: { after: 10 },
@@ -321,12 +399,12 @@ function App() {
                 new TextRun({
                   text: `Languages - `, 
                   bold: true,
-                  size: 25,
+                  size: 22,
                 }),
                 new TextRun({
                   text: `${resumeData.languages}\n`, 
                   color: "#000000", 
-                  size: 25,
+                  size: 22,
                 }),
               ],
               spacing: { after: 10 },
@@ -342,12 +420,12 @@ function App() {
                 new TextRun({
                   text: `Database - `,
                   bold: true,
-                  size: 25,
+                  size: 22,
                 }),
                 new TextRun({
                   text: `${resumeData.database}\n`, 
                   color: "#000000", 
-                  size: 25,
+                  size: 22,
                 }),
               ],
               spacing: { after: 10 },
@@ -363,12 +441,12 @@ function App() {
                 new TextRun({
                   text: `Frameworks - `, 
                   bold: true,
-                  size: 25,
+                  size: 22,
                 }),
                 new TextRun({
                   text: `${resumeData.framework}\n`,
                   color: "#000000", 
-                  size: 25, 
+                  size: 22, 
                 }),
               ],
               spacing: { after: 10 },
@@ -384,11 +462,12 @@ function App() {
                 new TextRun({
                   text: `Developer Tools - `, 
                   bold: true,
-                  size: 25,
+                  size: 22,
                 }),
                 new TextRun({
                   text: `${resumeData.developertools}\n`, 
                   color: "#000000", 
+                  size: 22,
                 }),
               ],
               spacing: { after: 10 },
@@ -429,7 +508,7 @@ function App() {
                   new TextRun({
                     text: resumeData[`proj${index + 1}name`],
                     bold: true,
-                    size: 25,
+                    size: 22,
                   }),
                 ],
                 spacing: { after: 30 },
@@ -442,12 +521,12 @@ function App() {
                   new TextRun({
                     text: `Techstack: `,
                     bold: true,
-                    size: 25,
+                    size: 22,
                   }),
                   new TextRun({
                     text: resumeData[`proj${index + 1}techstack`],
                     color: "#000000",
-                    size: 25,
+                    size: 22,
                   }),
                 ],
                 spacing: { after: 10 },
@@ -460,7 +539,7 @@ function App() {
                   new TextRun({
                     text: resumeData[`proj${index + 1}desc`],
                     color: "#000000",
-                    size: 25,
+                    size: 22,
                   }),
                 ],
                 spacing: { after: index === numProjects - 1 ? 200 : 140 },
@@ -506,7 +585,7 @@ function App() {
                 new TextRun({
                   text: `${resumeData.ach1}\n`, 
                   color: "#000000", 
-                  size: 25, 
+                  size: 22, 
                 }),
               ],
               spacing: { after: 40 },
@@ -521,7 +600,7 @@ function App() {
                 new TextRun({
                   text: `${resumeData.ach2}\n`, 
                   color: "#000000", 
-                  size: 25,
+                  size: 22,
                 }),
               ],
               spacing: { after: 40 },
@@ -566,7 +645,7 @@ function App() {
                       new TextRun({
                         text: resumeData[`cert${index + 1}name`],
                         color: "0000FF",
-                        size: 25,
+                        size: 22,
                       }),
                     ],
                     link: resumeData[`cert${index + 1}link`],
@@ -574,7 +653,7 @@ function App() {
                   new TextRun({
                     text: `, by ${resumeData[`cert${index + 1}org`]}`,
                     color: "000000",
-                    size: 25,
+                    size: 22,
                   }),
                 ],
                 spacing: { after: index === numCertificates - 1 ? 200 : 40 },
@@ -594,6 +673,90 @@ function App() {
     });
   };
 
+  const calculateProgress = () => {
+    const requiredFields = [
+      'name',
+      'email',
+      'phone',
+      'university',
+      'coursename',
+      'cgpa',
+      'languages',
+      'database',
+      'framework',
+      'developertools',
+      'ach1',
+      'ach2',
+    ];
+  
+    // Add project fields based on numProjects
+    for (let i = 1; i <= numProjects; i++) {
+      requiredFields.push(
+        `proj${i}name`,
+        `proj${i}techstack`,
+        `proj${i}desc`
+      );
+    }
+  
+    // Add certificate fields based on numCertificates
+    for (let i = 1; i <= numCertificates; i++) {
+      requiredFields.push(
+        `cert${i}name`,
+        `cert${i}org`,
+        `cert${i}link`
+      );
+    }
+  
+    const filledFields = requiredFields.filter(
+      field => resumeData[field] && resumeData[field].trim() !== ''
+    );
+  
+    return Math.round((filledFields.length / requiredFields.length) * 100);
+  };
+
+  
+  
+  useEffect(() => {
+    setProgress(calculateProgress());
+  }, [resumeData, numProjects, numCertificates]);
+
+
+  // particular fields progress bar
+
+  const calculateSectionProgress = () => {
+    const sections = {
+      basicInfo: ['name', 'email', 'phone', 'linkedIn', 'github'],
+      education: ['university', 'coursename', 'cgpa'],
+      skills: ['languages', 'database', 'framework', 'developertools'],
+      projects: Array(numProjects).fill().flatMap((_, i) => [
+        `proj${i + 1}name`,
+        `proj${i + 1}techstack`,
+        `proj${i + 1}desc`
+      ]),
+      certificates: Array(numCertificates).fill().flatMap((_, i) => [
+        `cert${i + 1}name`,
+        `cert${i + 1}org`,
+        `cert${i + 1}link`
+      ]),
+      achievements: ['ach1', 'ach2']
+    };
+  
+    return Object.entries(sections).reduce((acc, [section, fields]) => {
+      const filledFields = fields.filter(
+        field => resumeData[field] && resumeData[field].trim() !== ''
+      );
+      acc[section] = Math.round((filledFields.length / fields.length) * 100);
+      return acc;
+    }, {});
+  };
+  
+  // Enhanced ProgressBar component
+
+  useEffect(() => {
+    setProgress(calculateProgress());
+    setSectionProgress(calculateSectionProgress());
+  }, [resumeData, numProjects, numCertificates]);
+
   return (
     <>
 
@@ -609,10 +772,6 @@ function App() {
       </div>
 
         
-        {/* Rest of your existing JSX */}
-  
-
-      
     
     <div className="App">
     
@@ -620,6 +779,10 @@ function App() {
         <img src={logo} alt="" />
       <h1>Resume Maker</h1>
       </div>
+
+      
+      <ProgressBar2 progress={progress} sectionProgress={sectionProgress} />
+
       <h3>Basic Details : </h3>
       <div>
         <input
@@ -990,12 +1153,10 @@ function App() {
         
       ))}
 
-
-      <button className="button" onClick={generateDocument}
-      // style={{
-      //  border: 'none',
-      // }}
-      >Download</button>
+        <button className="button" onClick={generateDocument}>
+          Download 
+        </button>
+      
         <ToastContainer
         theme="colored"/>
 
@@ -1004,7 +1165,7 @@ function App() {
 
 <div className="footer">
   <p>Made with <span className="heart">❤</span> by <a href="https://github.com/Navneetdadhich" target="_blank" rel="noopener noreferrer">Navneet Dadhich</a></p>
-  <p>This Website Is Still In It's Refinement Period. Last Update Received On 18 December 2024</p>
+  <p>This Website Is Still In It's Refinement Period. Last Update Received On 20 December 2024</p>
 </div>
     
     </>
