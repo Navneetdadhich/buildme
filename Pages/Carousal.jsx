@@ -48,7 +48,7 @@ const Carousal = () => {
 
         <div className="w-full flex items-center justify-center overflow-auto pb-6 sm:p-12">
           <img
-            className="rounded-lg sm:rounded-3xl min-w-[280px] sm:min-w-[800px] min-h-[300px] sm:min-h-[400px] w-full h-full shadow-[0_10px_15px_rgba(0,_0,_0,_0.3)] sm:shadow-[0_20px_30px_rgba(0,_0,_0,_0.3)] border-gray-400 border-2"
+            className="rounded-lg sm:rounded-3xl min-w-[260px] sm:min-w-[800px] min-h-[300px] sm:min-h-[400px] w-full h-full shadow-[0_10px_15px_rgba(0,_0,_0,_0.3)] sm:shadow-[0_20px_30px_rgba(0,_0,_0,_0.3)] border-gray-400 border-2"
             src={demo}
             alt="Demo"
             // style={{ width: '400px', height: '400px' }}
