@@ -556,8 +556,11 @@ input:checked + .slider:before {
 /* Responsive adjustments */
 @media screen and (max-width: 768px) {
   .blob-inner-container {
-    transform: scale(0.6); /* Smaller scale on mobile */
+
+    /* transform: scale(0.9); Smaller scale on mobile */
   }
+
+  
   
   .App {
     width: 95%;
@@ -567,7 +570,11 @@ input:checked + .slider:before {
 
 @media screen and (max-width: 480px) {
   .blob-inner-container {
-    transform: scale(0.7); /* Even smaller scale on very small screens */
+    /* transform: scale(0.8); Even smaller scale on very small screens */
+  }
+
+  .blob-outer-container{
+    opacity: 0.5;
   }
 
   /* .progress-container{
