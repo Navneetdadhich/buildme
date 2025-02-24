@@ -4,7 +4,7 @@ const ProgressBar2 = ({ progress, sectionProgress }) => {
     const [showDetails, setShowDetails] = useState(false);
   
     return (
-      <div className="progress-container">
+      <div className="progress-container rounded-lg mr-5">
         <div className="progress-bar">
           <div 
             className="progress" 
@@ -19,7 +19,7 @@ const ProgressBar2 = ({ progress, sectionProgress }) => {
           Overall Progress: {progress}% {showDetails ? '▼' : '▲'}
         </div>
         {showDetails && (
-          <div className="section-progress">
+          <div className="section-progress ">
             {Object.entries(sectionProgress).map(([section, progress]) => (
               <div key={section} className="section-item">
                 <span>{section}: </span>

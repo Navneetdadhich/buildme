@@ -1,3 +1,7 @@
+
+
+@import url('https://fonts.googleapis.com/css2?family=Miltonian+Tattoo&display=swap');
+
 body{
   background-color: #B3C8CF;
   color: #314f58;
@@ -318,13 +322,20 @@ input:checked + .slider:before {
 /* Updated Progress Bar Styles */
 .progress-container {
   position: sticky;
+  
   top: 0;
-  background-color: #B3C8CF; /* Light theme background */
+  /* background-color: #B3C8CF; Light theme background */
   padding: 10px 20px;
+  /* border: #435c64; */
+  background-blend-mode: overlay;
+  border-bottom: 3px rgb(35, 35, 35) solid;
+  backdrop-filter: blur(20px);
   z-index: 900; /* Below theme switcher but above content */
   margin: 0 -20px 20px -20px; /* Negative margin to stretch full width */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
   transition: background-color 0.3s ease;
+  box-shadow: 
+    2px 2px 40px rgba(42, 41, 41, 0.3);
 }
 
 .progress-bar {
@@ -358,6 +369,7 @@ input:checked + .slider:before {
 }
 
 .section-item {
+  text-transform: capitalize;
   font-size: 12px;
   display: flex;
   justify-content: space-between;
@@ -366,10 +378,11 @@ input:checked + .slider:before {
   border-radius: 4px;
 }
 
+
 /* Dark theme support */
-[data-theme='dark'] .progress-container {
+/* [data-theme='dark'] .progress-container {
   background-color: #314f58;
-}
+} */
 
 [data-theme='dark'] .progress-bar {
   background: #435c64;
@@ -386,7 +399,11 @@ input:checked + .slider:before {
 /* Responsive styles */
 @media screen and (max-width: 480px) {
   .progress-container {
+    width: 300px;
     padding: 8px 15px;
+    margin-left:10px;
+    margin-right:10px;
+    margin-bottom: 15px;
   }
 
   .progress-text {
@@ -407,4 +424,203 @@ input:checked + .slider:before {
 /* Add some padding to the top of the App to account for the sticky progress bar */
 .App {
   padding-top: 20px;
+}
+
+
+.blob-outer-container {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+  inset: 0;
+  margin: auto;
+  filter: blur(100px);
+  opacity: 0.5;
+}
+
+.blob-inner-container {
+  border-radius: 99999px;
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 100vw;
+  height: 100vh;
+  min-width: 1000px;
+  overflow: hidden;
+  background-color: #fff;
+  transform: scale(0.8);
+}
+
+.blob {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  inset: 0;
+  margin: auto;
+  background: conic-gradient(from 0deg, #69ff5e, #82fffd, #ecff5e, #82fffd, #ecff5e, #82fffd);
+  animation: spinBlob 15s linear infinite;
+}
+
+@keyframes spinBlob {
+  0% {
+      transform: rotate(0deg) scale(2);
+  }
+
+  100% {
+      transform: rotate(0.6turn) scale(2);
+  }
+}
+
+.but{
+  position: absolute;
+  z-index: 2;
+}
+
+.carrr{
+  background-color: #ffffff;
+  position: relative;
+}
+
+
+
+.playwrite{
+  font-family: "Miltonian Tattoo", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@keyframes tilt {
+  0%, 50%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(0.5deg);
+  }
+  75% {
+    transform: rotate(-0.5deg);
+  }
+}
+
+.animate-tilt {
+  animation: tilt 10s infinite linear;
+}
+
+.blob-outer-container {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  z-index: 0;
+  inset: 0;
+  margin: auto;
+  filter: blur(100px);
+  opacity: 0.3;
+  pointer-events: none;
+  overflow: hidden; /* Prevent scrollbars */
+}
+
+.blob-inner-container {
+  border-radius: 99999px;
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  min-width: min(1000px, 100vw); /* Responsive min-width */
+  overflow: hidden;
+  background-color: #fff;
+  transform: scale(0.8);
+}
+
+.blob {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  margin: auto;
+  background: conic-gradient(from 0deg, #69ff5e, #82fffd, #ecff5e, #82fffd, #ecff5e, #82fffd);
+  animation: spinBlob 15s linear infinite;
+}
+
+/* Update App container for better responsiveness */
+.App {
+  max-width: 600px;
+  width: 90%; /* Add width constraint */
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box; /* Ensure padding is included in width */
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .blob-inner-container {
+    transform: scale(0.6); /* Smaller scale on mobile */
+  }
+  
+  .App {
+    width: 95%;
+    padding: 15px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .blob-inner-container {
+    transform: scale(0.7); /* Even smaller scale on very small screens */
+  }
+
+  /* .progress-container{
+    padding-right: 2px;
+    padding-left: 2px;
+  } */
+  
+  .App {
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Adjust theme switch position for mobile */
+  .theme-switch-container {
+    top: 10px;
+    right: 10px;
+  }
+}
+
+/* Ensure content remains readable on all backgrounds */
+input, textarea, select {
+  background-color: rgba(241, 240, 232, 0.9); /* Slightly transparent background */
+  backdrop-filter: blur(5px); /* Add blur effect behind inputs */
+}
+
+[data-theme='dark'] input,
+[data-theme='dark'] textarea,
+[data-theme='dark'] select {
+  background-color: rgba(179, 200, 207, 0.9);
+}
+
+/* Ensure footer stays at bottom and above blob */
+.footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  margin-top: 50px;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.App h3{
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.App h5{
+  font-size: small;
+  font-weight: 700;
+  margin-bottom: 5px;
 }
