@@ -1174,7 +1174,7 @@ const validateAllFields = () => {
 
 <div className="footer">
   <p>Made with <span className="heart">❤</span> by <a href="https://github.com/Navneetdadhich" target="_blank" rel="noopener noreferrer">Navneet Dadhich</a></p>
-  <p>This Website Is Still In It's Refinement Period. Last Update Received On 20 December 2024</p>
+  {/* <p>This Website Is Still In It's Refinement Period. Last Update Received On 20 December 2024</p> */}
 </div>
     
     </>
