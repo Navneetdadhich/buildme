@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { saveAs } from "file-saver";
 import ProgressBar2 from "./components/ProgressBar2.jsx";
+import { motion, useScroll, useSpring } from "framer-motion";
 
 import { ToastContainer, toast } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
@@ -757,10 +758,35 @@ const validateAllFields = () => {
     setSectionProgress(calculateSectionProgress());
   }, [resumeData, numProjects, numCertificates]);
 
+  const { scrollYProgress } = useScroll()
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  })
+
   return (
     <>
 
-<div className="theme-switch-container">
+    <motion.div style={{ scaleX: scrollYProgress,
+      position: "fixed", 
+      zIndex: 1,
+      top: 0,
+      left: 0,
+      right: 0,
+      height: 10,
+      originX: 0,
+      backgroundColor: "#f1f191",
+     }}
+     
+     transition={{ duration: 0.5 }}
+     />
+
+    
+
+<motion.div className="theme-switch-container" initial={{ opacity: 0}}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}>
         <label className="theme-switch">
           <input
             type="checkbox"
@@ -769,7 +795,7 @@ const validateAllFields = () => {
           />
           <span className="slider"></span>
         </label>
-      </div>
+      </motion.div>
 
       <div className="blob-outer-container">
         <div className="blob-inner-container">
@@ -777,7 +803,9 @@ const validateAllFields = () => {
         </div>
       </div>
     
-    <div className="App">
+    <motion.div className="App" initial={{ opacity: 0}}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}>
     
       <div className="heading">
         <img src={logo} alt="" />
@@ -1167,7 +1195,7 @@ const validateAllFields = () => {
         theme="colored"/>
         
 
-    </div>  
+    </motion.div>  
 
     
    

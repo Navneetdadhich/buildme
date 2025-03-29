@@ -4,7 +4,7 @@ const ProgressBar2 = ({ progress, sectionProgress }) => {
     const [showDetails, setShowDetails] = useState(false);
   
     return (
-      <div className="progress-container rounded-lg mr-5">
+      <div className="progress-container rounded-lg mr-5 p-3">
         <div className="progress-bar">
           <div 
             className="progress" 
